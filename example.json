@@ -1,0 +1,62 @@
+[
+	{
+		"away":
+			{
+				"team": "Buccaneers",
+				"pts": 0
+			},
+		"home":
+			{
+				"team": "Saints",
+				"pts": 7
+			}
+	},
+	{
+		"away":
+			{
+				"team": "Saints",
+				"pts": 0
+			},
+		"home":
+			{
+				"team": "Falcons",
+				"pts": 3
+			}
+	},
+	{
+		"away":
+			{
+				"team": "Falcons",
+				"pts": 0
+			},
+		"home":
+			{
+				"team": "Buccaneers",
+				"pts": 17
+			}
+	},
+	{
+		"away":
+			{
+				"team": "Panthers",
+				"pts": 10
+			},
+		"home":
+			{
+				"team": "Falcons",
+				"pts": 0
+			}
+	},
+	{
+		"away":
+			{
+				"team": "Buccaneers",
+				"pts": 0
+			},
+		"home":
+			{
+				"team": "Panthers",
+				"pts": 3
+			}
+	}
+]
