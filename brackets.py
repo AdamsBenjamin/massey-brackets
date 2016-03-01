@@ -5,6 +5,7 @@ __version__ = '0.1'
 __email__ = 'adamsbt@appstate.edu'
 __credit__ = 'Benjamin Adams, Jenna Schachner, Gabriel Mercer'
 
+import pprint as pp
 import numpy as np
 import json
 import os
@@ -20,11 +21,11 @@ def parse_stats(filename):
 	data = []
 	with open(filename, 'r') as fp:
 		data = json.load(fp)
-	return data
+
+	return (data, len(set(entry['home']['team'] for entry in data)))
 
 
-def generate_matrices(data):
-	new_M_row = [0 for i in range(4)]
+def generate_matrices(data, num_teams):
 	team_counter = 0
 	M = []
 	y = []
@@ -42,30 +43,31 @@ def generate_matrices(data):
 			#print(entry['away']['team'] + ': ' + str(team_index[entry['away']['team']]))
 			team_counter += 1
 
-		M.append(list(new_M_row))
+		M.append([0 for i in range(num_teams)])
 		M[-1][team_index[entry['home']['team']]] = 1
 		M[-1][team_index[entry['away']['team']]] = -1
 
 		y.append(entry['home']['pts'] - entry['away']['pts'])
 
-	return (np.array(M), np.array(y))
+	M.append([1 for i in range(num_teams)])
+	y.append(0)
 
-def pprint(lst):
-	for row in lst:
-		for item in row:
-			print(item, end=' ')
-		print()
+	return (np.array(M), np.array(y), team_index)
+
+
+def rate_teams()
+	pass
 
 
 data = []
+num_teams = 0
 if len(sys.argv) != 2:
-	data = parse_stats(input('Please enter the name of the data file:\t'))
+	data, num_teams = parse_stats(input('Please enter the name of the data file:\t'))
 else:
-	data = parse_stats(sys.argv[1])
-M,y = generate_matrices(data)
+	data, num_teams = parse_stats(sys.argv[1])
 
-print(np.dot(np.transpose(M), M))
-print(np.dot(np.transpose(M), y))
+M,y,team_index = generate_matrices(data, num_teams)
+
 r = np.linalg.lstsq(M, y)[0]
 print(r)
-pprint(M)
+
