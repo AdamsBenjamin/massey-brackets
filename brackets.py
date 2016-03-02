@@ -65,9 +65,9 @@ def rate_teams(data, team_index):
 	for i in team_index.keys():
 		columns[team_index[i]] = i
 	ranks = zip(columns, data)
-	ranks = sorted(ranks, key = lambda i: i[-1])
-	for i in range(51):
-		print(str(i) + ' ' + str(ranks[0]) + ' ' + str(ranks[1]))
+	ranks = list(reversed(sorted(ranks, key = lambda i: i[-1])))
+	for i in range(50):
+		print(str(i+1) + ' ' + str(ranks[i][0]) + ' {:.2f}'.format(ranks[i][1]))
 
 
 data = []
@@ -80,5 +80,5 @@ else:
 M,y,team_index = generate_matrices(data, num_teams)
 
 r = np.linalg.lstsq(M, y)[0]
-# print(r)
+#print(r)
 rate_teams(r, team_index)
