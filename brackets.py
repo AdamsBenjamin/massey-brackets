@@ -52,7 +52,7 @@ def generate_matrices(data, num_teams):
 
 		# adds the newest game's point difference, in terms of the
 		# home team, to the end of the y vector.
-		y.append(entry['home']['pts'] - entry['away']['pts'])
+		y.append(entry['home']['pts'] - entry['away']['pts'] - 3)
 
 	M.append([1 for i in range(num_teams)])
 	y.append(0)
