@@ -7,7 +7,7 @@ import os
 import sys
 
 __author__ = 'Benjamin Adams'
-__version__ = '0.1'
+__version__ = '1.0'
 __email__ = 'adamsbt@appstate.edu'
 __credit__ = 'Benjamin Adams, Jenna Schachner, Gabriel Mercer'
 
@@ -29,6 +29,7 @@ def parse_stats(filename):
 
 def generate_matrices(data, num_teams):
 	team_counter = 0
+	hca_const = 2
 	M = []
 	y = []
 	team_index = {}
@@ -54,9 +55,8 @@ def generate_matrices(data, num_teams):
 		# home team, to the end of the y vector.
 		y.append(entry['home']['pts'] - entry['away']['pts'])
 
-		#home team advantage correction
-		if entry['home']['pts'] > entry['away']['pts']:
-			y[-1] -= 2
+		# home team advantage correction
+		y[-1] += hca_const if y[-1] < 0 else -(hca_const)
 
 	M.append([1 for i in range(num_teams)])
 	y.append(0)
@@ -86,5 +86,4 @@ else:
 M,y,team_index = generate_matrices(data, num_teams)
 
 r = np.linalg.lstsq(M, y)[0]
-#print(r)
 rate_teams(r, team_index)
