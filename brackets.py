@@ -8,8 +8,9 @@ import sys
 
 __author__ = 'Benjamin Adams'
 __version__ = '1.0'
-__email__ = 'adamsbt@appstate.edu'
+__email__ = 'adams.benjamin@protonmail.com'
 __credit__ = 'Benjamin Adams, Jenna Schachner, Gabriel Mercer'
+
 
 def parse_stats(filename):
     # checks that the given file exists and is a valid format.
@@ -68,7 +69,7 @@ def rate_teams(data, team_index):
     for i in team_index.keys():
         columns[team_index[i]] = i
     ranks = zip(columns, data)
-    ranks = list(reversed(sorted(ranks, key = lambda i: i[-1])))
+    ranks = list(reversed(sorted(ranks, key=lambda i: i[-1])))
     for i in range(len(ranks)):
         print('{:3} {:40} {:.2f}'.format(i+1, ranks[i][0], ranks[i][1]))
 
@@ -80,7 +81,7 @@ if len(sys.argv) != 2:
 else:
     data = parse_stats(sys.argv[1])
 
-M,y,team_index = generate_matrices(data)
+M, y, team_index = generate_matrices(data)
 
 r = np.linalg.lstsq(M, y)[0]
 rate_teams(r, team_index)
