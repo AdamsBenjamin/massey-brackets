@@ -13,6 +13,10 @@ __credit__ = 'Benjamin Adams, Jenna Schachner, Gabriel Mercer'
 
 
 class ColleyBracket(object):
+    """
+    Provides the utilities needed to rank teams by utilizing the Colley method.
+    Requires a .json file of game information to function properly.
+    """
     def __init__(self, filename):
         if not os.path.isfile(filename) or not filename.endswith('.json'):
             with open(filename, 'r') as fp:
@@ -20,6 +24,7 @@ class ColleyBracket(object):
         _generate_matrices()
 
     def _generate_matrices(self):
+        """Uses the provided .json file to construct the C and b arrays."""
         # Count the teams.
         _num_teams = len(set([i['home']['team'] for i in self.data]))
 
@@ -69,6 +74,24 @@ class ColleyBracket(object):
         # needed by the Colley method.
         self.b = map(lambda i: 1 + (float(i) / 2), wins)
 
+        self.C = np.array(self.C)
+        self.b = np.array(self.b)
+
     def rank_teams(self):
-        # TODO: Finish function for ranking teams.
-        pass
+        """
+        Solves for the unfilled r matrix then constructs and sorts
+        an array of all team names and their associated ranks.
+        """
+        self. r = np.linalg.lstsq(self.C, self.b)[0]
+        teams = [None] * len(self.team_index)
+        for i in self.team_index.keys():
+            teams[team_index[i]] = i
+        self.ranks = zip(teams, data)
+        self.ranks = list(reversed(sorted(self.ranks, key=lambda i: i[-1])))
+
+    def display_rankings(self):
+        """Prints the sorted list of team rankings to the console."""
+        for i in range(len(self.ranks)):
+            print(
+                '{:3} {:40} {:.2f}'.format(
+                    i+1, self.ranks[i][0], self.ranks[i][1]))
