@@ -18,43 +18,43 @@ class ColleyBracket(object):
     Requires a .json file of game information to function properly.
     """
     def __init__(self, filename):
-        if not os.path.isfile(filename) or not filename.endswith('.json'):
+        self.data = 0
+        if os.path.isfile(filename) and filename.endswith('.json'):
             with open(filename, 'r') as fp:
-                self.data = json.open(fp)
-        _generate_matrices()
+                self.data = json.load(fp)
 
-    def _generate_matrices(self):
+    def generate_matrices(self):
         """Uses the provided .json file to construct the C and b arrays."""
         # Count the teams.
-        _num_teams = len(set([i['home']['team'] for i in self.data]))
+        num_teams = len(set([i['home']['team'] for i in self.data]))
 
         # Create square array, C, of length _num_teams.
         # The diagonal will be 2s; the rest will be filled with 0s.
         self.C = [[
             (0 if row != col else 2)
-            for in range(_num_teams)]
-            for col in range(_num_teams)]
+            for row in range(num_teams)]
+            for col in range(num_teams)]
 
         # Create array for storing game outcomes.
         # Results are cumulative.
-        wins = [0] for _ in range(_num_teams)
+        wins = [0] * num_teams
 
         # Dictionary for storing team names and
         # their associated team id numbers.
-        self._team_index = {}
+        self.team_index = {}
         team_counter = 0
 
         for entry in self.data:
             # Guarantee that each team has a unique id number.
-            if entry['home']['team'] not in self._team_index:
-                self._team_index[entry['home']['team']] = team_counter
+            if entry['home']['team'] not in self.team_index:
+                self.team_index[entry['home']['team']] = team_counter
                 team_counter += 1
-            if entry['away']['team'] not in self._team_index:
-                self._team_index[entry['away']['team']] = team_counter
+            if entry['away']['team'] not in self.team_index:
+                self.team_index[entry['away']['team']] = team_counter
                 team_counter += 1
 
-            home_index = self._team_index[entry['home']['team']]
-            away_index = self._team_index[entry['away']['team']]
+            home_index = self.team_index[entry['home']['team']]
+            away_index = self.team_index[entry['away']['team']]
             # Alter C to represent the game's happening.
             self.C[home_index][home_index] += 1
             self.C[away_index][away_index] += 1
@@ -95,3 +95,8 @@ class ColleyBracket(object):
             print(
                 '{:3} {:40} {:.2f}'.format(
                     i+1, self.ranks[i][0], self.ranks[i][1]))
+
+b = ColleyBracket('./2015.json')
+b.generate_matrices()
+b.rank_teams()
+b.display_rankings()
