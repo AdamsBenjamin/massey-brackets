@@ -22,6 +22,12 @@ class ColleyBracket(object):
         if os.path.isfile(filename) and filename.endswith('.json'):
             with open(filename, 'r') as fp:
                 self.data = json.load(fp)
+        else:
+            sys.exit(
+                     'Check file and path.\n'
+                     'Proper usage:\n'
+                     '\tpython colley_bracket.py (<filename>)\n'
+                     'Files must be in .json format.\n')
 
     def generate_matrices(self):
         """Uses the provided .json file to construct the C and b arrays."""
@@ -94,10 +100,14 @@ class ColleyBracket(object):
         """Prints the sorted list of team rankings to the console."""
         for i in range(len(self.ranks)):
             print(
-                '{:3} {:40} {:.2f}'.format(
-                    i+1, self.ranks[i][0], self.ranks[i][1]))
+                '{:3} {:40} {:.6f}'.format(
+                    i+1, unicode(self.ranks[i][0]).encode('utf-8'),
+                    self.ranks[i][-1]))
 
-b = ColleyBracket('./2014.json')
+
+b = ColleyBracket(
+    # input('Please enter the filename.') if len(sys.argv) != 3 else argv[2]
+)
 b.generate_matrices()
 b.rank_teams()
 b.display_rankings()
