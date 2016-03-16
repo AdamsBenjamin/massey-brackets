@@ -106,8 +106,8 @@ class ColleyBracket(object):
 
 
 b = ColleyBracket(
-    # input('Please enter the filename.') if len(sys.argv) != 3 else argv[2]
-)
+    (sys.argv[1] if len(sys.argv) == 2
+        else raw_input('Please enter the filename.')))
 b.generate_matrices()
 b.rank_teams()
 b.display_rankings()
