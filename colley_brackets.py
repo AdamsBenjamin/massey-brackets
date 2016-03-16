@@ -26,7 +26,7 @@ class ColleyBracket(object):
     def generate_matrices(self):
         """Uses the provided .json file to construct the C and b arrays."""
         # Count the teams.
-        num_teams = len(set([i['home']['team'] for i in self.data]))
+        num_teams = len(set([i['away']['team'] for i in self.data]))
 
         # Create square array, C, of length _num_teams.
         # The diagonal will be 2s; the rest will be filled with 0s.
@@ -58,8 +58,8 @@ class ColleyBracket(object):
             # Alter C to represent the game's happening.
             self.C[home_index][home_index] += 1
             self.C[away_index][away_index] += 1
-            self.C[home_index][away_index] -= 1
             self.C[away_index][home_index] -= 1
+            self.C[home_index][away_index] -= 1
 
             # Alter the cumulative wins for each team
             # depending on the game's outcome.
@@ -80,13 +80,14 @@ class ColleyBracket(object):
     def rank_teams(self):
         """
         Solves for the unfilled r matrix then constructs and sorts
-        an array of all team names and their associated ranks.
+        an array of tuples containing all team names and
+        their associated ranks.
         """
         self. r = np.linalg.lstsq(self.C, self.b)[0]
         teams = [None] * len(self.team_index)
         for i in self.team_index.keys():
-            teams[team_index[i]] = i
-        self.ranks = zip(teams, data)
+            teams[self.team_index[i]] = i
+        self.ranks = zip(teams, self.r)
         self.ranks = list(reversed(sorted(self.ranks, key=lambda i: i[-1])))
 
     def display_rankings(self):
@@ -96,7 +97,7 @@ class ColleyBracket(object):
                 '{:3} {:40} {:.2f}'.format(
                     i+1, self.ranks[i][0], self.ranks[i][1]))
 
-b = ColleyBracket('./2015.json')
+b = ColleyBracket('./2014.json')
 b.generate_matrices()
 b.rank_teams()
 b.display_rankings()
