@@ -77,7 +77,7 @@ def rate_teams(data, team_index):
 data = []
 num_teams = 0
 if len(sys.argv) != 2:
-    data = parse_stats(input('Please enter the name of the data file:\t'))
+    data = parse_stats(raw_input('Please enter the name of the data file:\t'))
 else:
     data = parse_stats(sys.argv[1])
 
