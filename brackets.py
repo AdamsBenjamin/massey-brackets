@@ -51,12 +51,13 @@ def generate_matrices(data):
 
         M[-1][team_index[entry['home']['team']]] = 1
         M[-1][team_index[entry['away']['team']]] = -1
-
+        M[-1].append(1)
         # adds the newest game's point difference, in terms of the
         # home team, to the end of the y vector.
         y.append(entry['home']['pts'] - entry['away']['pts'])
 
     M.append([1] * num_teams)
+    M[-1].append(0)
     y.append(0)
 
     return (np.array(M), np.array(y), team_index)
@@ -71,7 +72,10 @@ def rate_teams(data, team_index):
     ranks = zip(columns, data)
     ranks = list(reversed(sorted(ranks, key=lambda i: i[-1])))
     for i in range(len(ranks)):
-        print('{:3} {:40} {:.2f}'.format(i+1, ranks[i][0], ranks[i][1]))
+        print(
+            '{:3} {:40} {:.2f}'.format(
+                i+1, unicode(ranks[i][0]).encode('utf-8'),
+                ranks[i][1]))
 
 
 data = []

@@ -38,8 +38,9 @@ class ColleyBracket(object):
         # The diagonal will be 2s; the rest will be filled with 0s.
         self.C = [[
             (0 if row != col else 2)
-            for row in range(num_teams)]
-            for col in range(num_teams)]
+            for row in range(num_teams + 1)]
+            for col in range(num_teams + 1)]
+        self.C[-1][-1] = 0
 
         # Create array for storing game outcomes.
         # Results are cumulative.
@@ -76,11 +77,19 @@ class ColleyBracket(object):
                 wins[away_index] += 1
                 wins[home_index] -= 1
 
-        # Uses the wins array to produce the b array
+            self.C[home_index][-1] += 1
+            self.C[-1][home_index] += 1
+            self.C[away_index][-1] -= 1
+            self.C[-1][away_index] -= 1
+
+            self.C[-1][-1] += 1
+
+        #        Uses the wins array to produce the b array
         # needed by the Colley method.
-        self.b = map(lambda i: 1 + (float(i) / 2), wins)
 
         self.C = np.array(self.C)
+        self.b = map(lambda i: 1 + (float(i) / 2), wins)
+        self.b.append(sum(self.b))
         self.b = np.array(self.b)
 
     def rank_teams(self):
