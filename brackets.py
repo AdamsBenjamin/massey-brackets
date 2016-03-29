@@ -27,7 +27,7 @@ def parse_stats(filename):
 
 
 def generate_matrices(data):
-    num_teams = len(set([entry['home']['team'] for entry in data]))
+    num_teams = len(set([entry['away']['team'] for entry in data]))
     team_counter = 0
     home_benefit = 0
     M = []
